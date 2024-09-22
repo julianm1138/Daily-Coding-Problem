@@ -1,0 +1,13 @@
+This problem was asked by Apple.
+
+Implement a job scheduler which takes in a function f and an integer n, and calls f after n milliseconds.
+
+//Aside from the specified requirements, it is unclear if we are actually meant to create a job scheduler that handles promises, queuing or canceling jobs, etc. so I'm only going to do what the instructions ask me to.
+//The job scheduler can be a function that uses a function and integer as arguments and calls the function after the (integer) milliseconds.
+//We can implement this using the built-in setTimeout method.
+
+const jobScheduler = (f, n) => {
+    setTimeout(f, n);
+}
+
+//setTimeout takes a function and time as arguments so we can simply pass the jobScheduler's arguments down to it.
