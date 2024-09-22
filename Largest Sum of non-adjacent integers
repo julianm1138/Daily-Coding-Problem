@@ -1,0 +1,24 @@
+Given a list of integers, write a function that returns the largest sum of non-adjacent numbers. Numbers can be 0 or negative.
+
+For example, [2, 4, 6, 2, 5] should return 13, since we pick 2, 6, and 5. [5, 1, 1, 5] should return 10, since we pick 5 and 5.
+
+
+//We can solve this by storing the previous max sum in a variable so that adjacent elements are not computed.
+//Compute the max value of the last known max sum and the current element.
+//Update the prevMax to be the last known max value. This ensures that no adjacent elements are summed due to a skip.
+
+
+const largestSum = (arr) => {
+  let currentMax = 0;
+  let prevMax = 0;
+  let temp = 0;
+
+  for (let i = 0; i < arr.length; i++) {
+    temp = currentMax;
+    currentMax = Math.max(currentMax, prevMax + arr[i]);
+    prevMax = temp;
+  }
+  return currentMax;
+};
+
+console.log(largestSum([5, 1, 1, 5]));
