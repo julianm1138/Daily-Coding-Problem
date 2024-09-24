@@ -29,8 +29,8 @@ console.log(findStr("de", ["dog", "deer", "deal"]));
 //Create a master class called Trie which will handle TrieNode instances. The master class will handle the logic of our trie. The subclass TrieNode will handle storing characters.
 //Declare a method called insert which loops through each character in the word and if the character does not exist in any trieNodes we will create a new node for that character. If the character does exist we go to the TrieNode's children object to use the node that already exists. When the loop exits a branch of nodes is created for the characters that make up that word.
 
-//Declare a method called dfs which will act as a helper function to 
-//Declare a method called findWordsWithPrefix which loops through each character in the prefix and if it does not exist in the Trie exit the loop. If it does exist we go to the TrieNode's children object to reference the character at already exists 
+//Declare a method called dfs which will act as a helper function to recursively search the prefix branches. It works by checking the prefixes' TrieNode instances so as long as the end of the branch is not reached, it will continue to concatenate children of the prefix's branch/TrieNode instance until the end of the branch is reached. This means the word has the given prefix and will push the complete word to the array.
+//Declare a method called findWordsWithPrefix which loops through each character in the prefix and if it does not exist in the Trie exit the loop. If it does exist we go to the character's TrieNode instance to reference the character that already exists and call dfs to access the word found under the prefix.
 
 
 class Trie {
