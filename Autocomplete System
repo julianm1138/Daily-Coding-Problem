@@ -1,0 +1,89 @@
+This problem was asked by Twitter.
+
+Implement an autocomplete system. That is, given a query string s and a set of all possible query strings, return all strings in the set that have s as a prefix.
+
+For example, given the query string de and the set of strings [dog, deer, deal], return [deer, deal].
+
+Hint: Try preprocessing the dictionary into a more efficient data structure to speed up queries.
+
+//We can solve this in O(n) for space and time if we use an object for element storage.
+//Loop through the array which takes O(n) because we loop through the array once.
+//If the first two characters of the array element match the prefix we add it to the object. The object will scale based on the array elements that meet the condition so O(n) again.
+//Return the values in the objects as an array.
+
+
+const obj = {};
+
+function findStr(prefix, arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].slice(0, 2) === prefix) {
+      obj[i] = arr[i];
+    }
+  }
+  return Object.values(obj);
+}
+
+console.log(findStr("de", ["dog", "deer", "deal"]));
+
+//if we want to be even more efficient we can use a trie which leverages O(m) time and space where only the prefix will be iterated. 
+//Create a master class called Trie which will handle TrieNode instances. The master class will handle the logic of our trie. The subclass TrieNode will handle storing characters.
+//Declare a method called insert which loops through each character in the word and if the character does not exist in any trieNodes we will create a new node for that character. If the character does exist we go to the TrieNode's children object to use the node that already exists. When the loop exits a branch of nodes is created for the characters that make up that word.
+
+//Declare a method called dfs which will act as a helper function to 
+//Declare a method called findWordsWithPrefix which loops through each character in the prefix and if it does not exist in the Trie exit the loop. If it does exist we go to the TrieNode's children object to reference the character at already exists 
+
+
+class Trie {
+  constructor() {
+    this.root = new TrieNode();
+  }
+  //This method loops through each word and at the end of each word the loop terminates. This creates 1 branch per word.
+  insert(word) {
+    let node = this.root;
+    for (let char of word) {
+      if (!node.children[char]) {
+        node.children[char] = new TrieNode();
+      }
+      node = node.children[char]; //the root of the trie is being reassigned from an empty node to the character that already exists to simulate travsering the trie to the node/character that already exists
+    }
+    node.isEndofWord = true;
+  }
+
+  dfs(node, prefix, results) {
+    if (node.isEndofWord) {
+      results.push(prefix);
+    }
+    for (const child in node.children) {
+      this.dfs(node.children[child], prefix + child, results);
+    }
+  }
+  findWordsWithPrefix(prefix) {
+    const results = [];
+    let node = this.root;
+    for (let char of prefix) {
+      if (!node.children[char]) {
+        return results;
+      }
+      node = node.children[char];
+    }
+    this.dfs(node, prefix, results);
+    return results;
+  }
+}
+
+class TrieNode {
+  constructor() {
+    this.children = {};
+    this.isEndofWord = false;
+  }
+}
+
+const trie = new Trie();
+
+const words = ["dog", "deer", "deal"];
+
+words.forEach((word) => trie.insert(word));
+const result = trie.findWordsWithPrefix("de");
+console.log(result);
+
+
