@@ -1,0 +1,57 @@
+This problem was asked by Amazon.
+
+There exists a staircase with N steps, and you can climb up either 1 or 2 steps at a time. Given N, write a function that returns the number of unique ways you can climb the staircase. The order of the steps matters.
+
+For example, if N is 4, then there are 5 unique ways:
+
+1, 1, 1, 1
+2, 1, 1
+1, 2, 1
+1, 1, 2
+2, 2
+
+//We can solve this problem rescursively by defining the base cases where n = 1 and n = 2. If n is 1 there is 1 possible step (1). If n is 2 there are 2 possible steps (1 + 1 = 2 and 2). In either case those are the smallest subproblems for this recursive solution.
+//Now we can start at the end at n - 1 which represents taking one step backwards from n and n - 2 which represents taking two steps backwards from n. If you call either one recursively it will sum the steps needed tto reach n as it leads back down to the base cases. 
+//Now if we combine the two, that will give us all possibilities where the number of steps on the stairs is n, and the number of steps allowed to climb at a time is 1 or 2.
+
+function possibleSteps(n) {
+  if (n === 0) {
+    return 1;
+  }
+  if (n === 1) {
+    return 1;
+  }
+  if (n === 2) {
+    return 2;
+  }
+  return possibleSteps(n - 1) + possibleSteps(n - 2);
+}
+
+console.log(possibleSteps(4));
+
+
+What if, instead of being able to climb 1 or 2 steps at a time, you could climb any number from a set of positive integers X? For example, if X = {1, 3, 5}, you could climb 1, 3, or 5 steps at a time.
+
+//To solve this addition to the main problem, we would need to iterate through the list and put each value from x into the original function.
+//We will use the similar end to start/top-down approach. Set up base cases to n === 0 or n < 0 to stop the recursion.
+//Create a new array where each element is the result of the recursive call for each one.
+//Add them all together.
+
+function possibleSteps(n, x) {
+  if (n === 0) {
+    return 1;
+  }
+
+  if (n < 0) {
+    return 0;
+  }
+
+  const steps = x.map((step) => {
+    return possibleSteps(n - step, x);
+  });
+  return steps.reduce((acc, currVal) => acc + currVal, 0);
+}
+
+console.log(possibleSteps(4, [1, 3, 5]));
+
+
