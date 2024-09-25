@@ -1,0 +1,32 @@
+This problem was asked by Amazon.
+
+Given an integer k and a string s, find the length of the longest substring that contains at most k distinct characters.
+
+For example, given s = "abcba" and k = 2, the longest substring with k distinct characters is "bcb".
+
+//We need to get the longest subtring with k different characters. We can achieve this by using a sliding window and keep track of the length of each valid substring.
+//We need to use an object to store the count of each character. 
+//Loop from the start to the end of the string and assign each property to be each unique character and each of their values to the count of each character.
+//Use a while loop to keep track of when the length of the keys > 2, if yes, delete the key so that we have a valid substring.
+//Use maxLength to keep track of the maximum value starting from 0 and each substr's value that passes through Math.max(). These are represented by the current values of right and left. +1 for to account for 0 based indexing.
+
+
+function findLongestLength(k, s) {
+  let obj = {};
+  let left = 0;
+  let maxLength = 0;
+  for (let right = 0; right < s.length; right++) {
+    obj[s[right]] = obj[s[right]] || 0 + 1;
+
+    while (Object.keys(obj).length > k) {
+      obj[s[left]]--;
+      if (obj[s[left]] === 0) {
+        delete obj[s[left]];
+      }
+      left++;
+    }
+    maxLength = Math.max(maxLength, right - left + 1);
+  }
+  return maxLength;
+}
+console.log(findLongestLength(2, "abcba"));
