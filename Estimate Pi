@@ -1,0 +1,36 @@
+This problem was asked by Google.
+
+The area of a circle is defined as πr^2. Estimate π to 3 decimal places using a Monte Carlo method.
+
+Hint: The basic equation of a circle is x2 + y2 = r2.
+
+//The key to solving this is using the ratio of areas of a circle and a square, but in order to use that we need a reference value.
+//We can start with a 2 x 2 square and fit a circle inside of it where the diameter is 2.
+//We can represent the possible points inside a circle (inside the rectangle too) as being x2 + y2 and the circle as being 1.
+//Now we can use the ratio of areas: ( area of circle / area of square = π / 4 )
+
+//Generate random values for x and y between -1 and 1 to fall within the range of the circle. 
+//Now we can pass those random values into the equation/statement x2 + y2 <= 1 to test if they fall inside the circle.
+//When the statement is true for each pair of randomly generated coordinates, that represents the point landing inside the circle. 
+//Given we need to estimate π, we can rearrange 4 * ( area of circle / area of square = π / 4 ) * ( 4 / 1 ) = ( π = 4 * ( area of circle / area of square))
+//Finally we can represent our rearranged equation for pi as ( π = 4 * ( insideCount / totalCount)) where the insideCount is the number of times our random values pass the test and the totalCount is every attempt.
+
+
+function estimatePi() {
+  let insideCount = 0;
+  let totalCount = 0;
+
+  for (let i = 0; i < 10000; i++) {
+    let x = Math.random() * 2 - 1;
+    let y = Math.random() * 2 - 1;
+    const circleEquation = x ** 2 + y ** 2 <= 1;
+    if (circleEquation) {
+      insideCount++;
+    }
+    totalCount++;
+  }
+  const piEstimation = 4 * (insideCount / totalCount);
+  return piEstimation.toFixed(3);
+}
+
+console.log(estimatePi());
