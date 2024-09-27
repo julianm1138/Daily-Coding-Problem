@@ -1,0 +1,21 @@
+This problem was asked by Facebook.
+
+Given a stream of elements too large to store in memory, pick a random element from the stream with uniform probability.
+
+//We can solve this by using a technique called reservoir sampling. 
+//The purpose of reservoir sampling is "choosing a simple random sample, without replacement, of k items from a population of unknown size n in a single pass over the items" - Wikipedia 
+
+
+const reservoir = (arr) => {
+  let firstElement = arr[0];                    //Now we need a sample. I pick the first element.
+  for (let i = 1; i < arr.length; i++) {        //Since we cannot store our results in memory we will have to iterate through them.
+    
+                                        
+      const randomNum = Math.random();          //Select a random integer between 0 and 1 to simulate random probability.
+
+    if (randomNum < 1 / (i + 1)) {              //Check if the random integer is less than 1 / i (which represents 1 / n). This ensures that as we continue to sample random elemens from the array each one has equal                                                   chance of being chosen.
+      firstElement = arr[i];                    //If true, assign the corresponding element
+    }
+  }
+  return firstElement;                          //Return the random element.
+};
