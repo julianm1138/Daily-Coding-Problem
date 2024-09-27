@@ -13,8 +13,8 @@ const reservoir = (arr) => {
                                         
       const randomNum = Math.random();          //Select a random integer between 0 and 1 to simulate random probability.
 
-    if (randomNum < 1 / (i + 1)) {              //Check if the random integer is less than 1 / i (which represents 1 / n). This ensures that as we continue to sample random elemens from the array each one has equal                                                   chance of being chosen.
-      firstElement = arr[i];                    //If true, assign the corresponding element
+    if (randomNum < 1 / (i + 1)) {              //Check if the random integer is less than 1 / i (which represents 1 / n). This ensures that as we continue to sample random elements from the array each one has equal chance of being chosen.
+      firstElement = arr[i];                    //If true, assign the corresponding element.
     }
   }
   return firstElement;                          //Return the random element.
