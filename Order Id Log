@@ -1,0 +1,40 @@
+This problem was asked by Twitter.
+
+You run an e-commerce website and want to record the last N order ids in a log. Implement a data structure to accomplish this, with the following API:
+
+record(order_id): adds the order_id to the log
+get_last(i): gets the ith last element from the log. i is guaranteed to be smaller than or equal to N.
+You should be as efficient with time and space as possible.
+
+//If the goal is to record the last N order ids in a log from an API, we could use a circular array so that any new order id's placed into the array that exceed n will replace the oldest order id based on % length of the array.
+//Now, we need two methods: record to add the order id to the log and get_last which will retreive the specified index of those elements.
+
+//Let's call the circular array "buffer." This will be our fixed size array.
+//Define the starting index for the array.
+//Create a helper function to access the buffer and get the element inside at the specified index.
+//Create a helper function that takes the orderId API and assigns the current element in the API to be the current order ID. As we move through the API we will assign each new array slot to be an order ID.
+//Create a helper function that accesses the array and retrieves the last i-th element. The index is defined as the current index - i + buffer.length because we need to go back i times to get the last i-th element from the array.
+//Call our accessBuffer function to retrieve that element.
+
+
+const createOrderLog = (n) => {
+  let buffer = new Array(n);
+  let currentIndex = 0;
+
+  const accessBuffer = (index) => {
+    return buffer[index]; 
+  };
+  const record = (orderId) => {
+    buffer[currentIndex] = orderId;
+    currentIndex = (currentIndex + 1) % buffer.length;
+  };
+  const getLast = (i) => {
+    const index = (currentIndex - i + buffer.length) % buffer.length;
+    return accessBuffer(index);
+  };
+  return {
+    record,
+    getLast,
+  };
+};
+
