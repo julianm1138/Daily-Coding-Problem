@@ -1,0 +1,70 @@
+This problem was asked by Google.
+
+Suppose we represent our file system by a string in the following manner:
+
+The string "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext" represents:
+
+dir
+    subdir1
+    subdir2
+        file.ext
+The directory dir contains an empty sub-directory subdir1 and a sub-directory subdir2 containing a file file.ext.
+
+The string "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext" represents:
+
+dir
+    subdir1
+        file1.ext
+        subsubdir1
+    subdir2
+        subsubdir2
+            file2.ext
+The directory dir contains two sub-directories subdir1 and subdir2. subdir1 contains a file file1.ext and an empty second-level sub-directory subsubdir1. subdir2 contains a second-level sub-directory subsubdir2 containing a file file2.ext.
+
+We are interested in finding the longest (number of characters) absolute path to a file within our file system. For example, in the second example above, the longest absolute path is "dir/subdir2/subsubdir2/file2.ext", and its length is 32 (not including the double quotes).
+
+Given a string representing the file system in the above format, return the length of the longest absolute path to a file in the abstracted file system. If there is no file in the system, return 0.
+
+Note:
+
+The name of a file contains at least a period and an extension.
+
+The name of a directory or sub-directory will not contain a period.
+
+
+//We can solve this by using a stack to keep track of the current length of each absolute path and the current depth to keep track of when to remove levels from the stack.
+//First split the input into components so we can keep track of \t characters.
+//While the stack's length is greater than the current level, remove elements until the stack's length represents the current level.
+//Loop through each component and for each component: if the component is a file get the sum of every string length in the stack so far including the file. Get the max length by comparing each group of strings so far.
+//if the component is a directory add its string length to the stack.
+
+
+const longestLengthPath = (str) => {
+  const components = str.split("\n");
+  let stack = [];
+
+  let maxLength = 0;
+
+  for (let i = 0; i < components.length; i++) {
+    const currentDepth = components[i].lastIndexOf("\t") + 1;
+
+    const componentName = components[i].replace(/\t/g, "");
+    const componentLength = componentName.length;
+
+    while (stack.length > currentDepth) { 
+      stack.pop();
+    }
+
+    if (componentName.includes(".")) {
+      const currentPathLength =
+        stack.reduce((acc, currVal) => acc + currVal, 0) + componentLength;
+      maxLength = Math.max(maxLength, currentPathLength);
+    } else {
+      stack.push(componentLength + 1);
+    }
+  }
+  return maxLength;
+};
+console.log(
+  longestLengthPath("dir\n\tsubdir1\n\t\tfile1.ext\n\tsubdir2\n\t\tfile2.ext")
+);
