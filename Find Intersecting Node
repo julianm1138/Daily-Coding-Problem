@@ -1,0 +1,48 @@
+This problem was asked by Google.
+
+Given two singly linked lists that intersect at some point, find the intersecting node. The lists are non-cyclical.
+
+For example, given A = 3 -> 7 -> 8 -> 10 and B = 99 -> 1 -> 8 -> 10, return the node with value 8.
+
+In this example, assume nodes with the same value are the exact same node objects.
+
+Do this in O(M + N) time (where M and N are the lengths of the lists) and constant space.
+
+
+// Imagine we have two singly linked lists where each list is made of nodes which can hold any values. 
+// We need to find the two nodes that are at the same location in memory.
+// We can do this by using an object to instances of each node.
+// Loop through the first LL starting at the head. If the next value is not null we will add each node/object instance to the set. This is so that we can check through a small list size but still have the unique references in memory available. 
+// Loop through the second LL starting at its head. If the Set includes the same node return its value.
+
+class ListNode {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+getIntersectingNode = (headA, headB) => {
+  const seenNodes = new Set();
+  let currentA = headA;
+  while (currentA !== null) {
+    seenNodes.add(currentA);
+    currentA = currentA.next;
+  }
+  let currentB = headB;
+  while (currentB !== null) {
+    if (seenNodes.has(currentB)) {
+      return currentB;
+    }
+    currentB = currentB.next;
+  }
+  return null;
+};
+
+const node1 = new ListNode(1);
+const node2 = new ListNode(2);
+node1.next = node2; // Link node 1 to node 2
+
+const headA = node1; // Head A points to node 1
+const headB = node2; // Head B points to node 2, intersecting at node 2
+console.log(getIntersectingNode(headA, headB).value);
