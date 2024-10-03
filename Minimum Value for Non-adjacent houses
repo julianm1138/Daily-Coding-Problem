@@ -1,0 +1,39 @@
+This problem was asked by Facebook.
+
+A builder is looking to build a row of N houses that can be of K different colors. He has a goal of minimizing cost while ensuring that no two neighboring houses are of the same color.
+
+Given an N by K matrix where the nth row and kth column represents the cost to build the nth house with kth color, return the minimum cost which achieves this goal.
+
+
+//We are looking at a 2d array where each inner array/row represents a house and each column/index represents a color. Inside each array are integers that represent values of a house at the (index) color.
+//We must get the minimum value of each house and not use the same color for adjacent houses (so we can't use the same index of consecutive inner arrays).
+// We can keep track of the previous index, minimum value's index, and minimum value in variables.
+// Loop through each inner array.
+// If the index of the inner array's element is not the previous index and the inner array's element is less than the minValue then update the minIndex and minValue. 
+// Add the minVal to the sum and set the prevIndex to the minIndex after each outer loop iteration.
+
+const minValForHouses = (arr) => {
+  let sum = 0;
+  let prevIndex = -1;
+  for (let i = 0; i < arr.length; i++) {
+    let minIndex = -1;
+    let minVal = Infinity;
+    for (j = 0; j < arr[i].length; j++) {
+      if (j !== prevIndex && arr[i][j] < minVal) {
+        minIndex = j;
+        minVal = arr[i][j];
+      }
+    }
+    sum += minVal;
+    prevIndex = minIndex;
+  }
+
+  return sum;
+};
+console.log(
+  minValForHouses([
+    [1, 2, 4],
+    [3, 4, 6],
+    [8, 3, 5],
+  ])
+);
