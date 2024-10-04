@@ -1,0 +1,91 @@
+This problem was asked by Snapchat.
+
+Given an array of time intervals (start, end) for classroom lectures (possibly overlapping), find the minimum number of rooms required.
+
+For example, given [(30, 75), (0, 50), (60, 150)], you should return 2.
+
+// We can solve this efficiently with a min-heap.
+// The min-heap will keep track of the min value.
+// Loop through the array of intervals and check if there is overlap. 
+// Add values to the min-heap to represent rooms.
+
+
+class minHeap {
+  constructor() {
+    this.heap = []; // Initialize the heap as an empty array
+  }
+
+  insert(value) {
+    this.heap.push(value);
+    let currentIndex = this.heap.length - 1;
+
+    while (currentIndex > 0) {
+      let parentIndex = Math.floor((currentIndex - 1) / 2);
+      if (this.heap[currentIndex] >= this.heap[parentIndex]) break;
+
+      [this.heap[currentIndex], this.heap[parentIndex]] = [
+        this.heap[parentIndex],
+        this.heap[currentIndex],
+      ];
+      currentIndex = parentIndex;
+    }
+  }
+
+  extractMin() {
+    if (this.heap.length === 0) return null;
+
+    let min = this.heap[0];
+    this.heap[0] = this.heap[this.heap.length - 1];
+    this.heap.pop();
+
+    let currentIndex = 0;
+
+    while (true) {
+      let leftChildIndex = 2 * currentIndex + 1;
+      let rightChildIndex = 2 * currentIndex + 2;
+      let smallest = currentIndex;
+
+      if (
+        leftChildIndex < this.heap.length &&
+        this.heap[leftChildIndex] < this.heap[smallest]
+      ) {
+        smallest = leftChildIndex;
+      }
+
+      if (
+        rightChildIndex < this.heap.length &&
+        this.heap[rightChildIndex] < this.heap[smallest]
+      ) {
+        smallest = rightChildIndex;
+      }
+      if (smallest === currentIndex) break;
+
+      [this.heap[currentIndex], this.heap[smallest]] = [
+        this.heap[smallest],
+        this.heap[currentIndex],
+      ];
+      currentIndex = smallest;
+    }
+    return min;
+  }
+}
+
+const findClassrooms = (intervals) => {
+  if (intervals.length === 0) return 0;
+
+  intervals.sort((a, b) => a[0] - b[0]); // Sort by start times
+
+  const heap = new minHeap(); // Create an instance of minHeap
+
+  for (let i = 0; i < intervals.length; i++) {
+    // Check if the heap is not empty and if the minimum end time is less than or equal to the current start time
+    if (heap.heap.length > 0 && heap.heap[0] <= intervals[i][0]) {
+      heap.extractMin(); // Use the instance to call extractMin if the room can be reused
+    }
+    heap.insert(intervals[i][1]); // Use the instance to call insert for the end time of the current interval
+  }
+  
+  return heap.heap.length; // Return the size of the heap as the number of classrooms required
+};
+
+console.log(findClassrooms([[30, 75], [0, 50], [60, 150]])); // Should return 2
