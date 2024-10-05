@@ -15,12 +15,10 @@ Given the set of words 'bed', 'bath', 'bedbath', 'and', 'beyond', and the string
   - retrieve the startIndex from the memo
   - Loop through the sentence and construct every subStr
   - check if any subStr is present in the set
-  -   
-
-
-
-
-
+  - Call the helper recursively in order to construct each word
+  - If the endIndex is not null, assign the result to be an array holding the word.
+  - If found is true, assign memo the result.
+// Start the recursion at the first index
 
 
 const constructSentence = (dictionary, sentence) => {
@@ -33,7 +31,6 @@ const constructSentence = (dictionary, sentence) => {
     if (startIndex in memo) {
       return memo[startIndex];
     }
-    console.log(startIndex);
 
     let result = [];
 
