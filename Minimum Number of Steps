@@ -1,0 +1,74 @@
+This problem was asked by Google.
+
+You are given an M by N matrix consisting of booleans that represents a board. Each True boolean represents a wall. Each False boolean represents a tile you can walk on.
+
+Given this matrix, a start coordinate, and an end coordinate, return the minimum number of steps required to reach the end coordinate from the start. If there is no possible path, then return null. You can move up, left, down, and right. You cannot move through walls. You cannot wrap around the edges of the board.
+
+For example, given the following board:
+
+[[f, f, f, f],
+[t, t, f, t],
+[f, f, f, f],
+[f, f, f, f]]
+and start = (3, 0) (bottom left) and end = (0, 0) (top left), the minimum number of steps required to reach the end is 7, since we would need to go through (1, 2) because there is a wall everywhere else on the second row.
+
+// We can solve this using a BFS queue, process every position on the matrix and check up, down, left, right of that position, and add 1 to the step each time we find a valid position.
+// Push each valid position onto the queue and repeat.
+
+// Check if within bounds.
+// Check if already in the set to prevent multiple checks of the same coordinates.
+// Edge cases: if the coordinates are the same and if we start on a wall/true boolean
+
+
+
+const reachEnd = (start, end, matrix) => {
+  let queue = [[start[0], start[1], 0]];
+  let visited = new Set();
+
+  if (start[0] === end[0] && start[1] === end[1]) return 0;
+  if (matrix[start[0]][start[1]] === true || matrix[end[0]][end[1]] === true)
+    return null;
+
+  while (queue.length > 0) {
+    const directions = [
+      [-1, 0],
+      [1, 0],
+      [0, -1],
+      [0, 1],
+    ];
+    let current = queue.shift();
+    let [row, col, steps] = current;
+    if (row === end[0] && col === end[1]) return steps;
+    for (let [directionX, directionY] of directions) {
+      let newRow = row + directionX;
+      let newCol = col + directionY;
+      let newPosition = [newRow, newCol];
+
+      if (
+        newRow >= 0 &&
+        newRow < matrix.length &&
+        newCol >= 0 &&
+        newCol < matrix[0].length &&
+        !matrix[newRow][newCol] &&
+        !visited.has(newPosition.toString())
+      ) {
+        visited.add(newPosition.toString());
+        queue.push([newRow, newCol, steps + 1]);
+      }
+    }
+  }
+  return null;
+};
+
+console.log(
+  reachEnd(
+    [3, 0],
+    [0, 0],
+    [
+      [false, false, false, false],
+      [true, true, false, true],
+      [false, false, false, false],
+      [false, false, false, false],
+    ]
+  )
+);
