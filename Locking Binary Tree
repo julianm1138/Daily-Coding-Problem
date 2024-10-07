@@ -11,3 +11,71 @@ You may augment the node to add parent pointers or any other property you would 
 
 
 // We can solve this by encapsulating a node constructor and the requested methods in a NodeTree class. 
+// For is_locked we just need to return the boolean
+// For lock we need to traverse the binary tree's parents and check if any are locked and set the current parent to the next parent to check all parents. If unlocked, lock it and return true.
+// For unlock we do the same but if locked, unlock it.
+// We can also implement a method to check locked descendants by recursively checking if any children are locked inside the lock method. If any of the children are locked we will have our method return false indicating we cannot make changes to the current node.
+// So basically if any of the parents are locked or children are locked we cannot make changes to the current node.
+
+class TreeNode {
+  constructor(value, left = null, right = null, parent = null) {
+    this.value = value;
+    this.left = left;
+    this.right = right;
+    this.parent = parent;
+    this.isLocked = false;
+  }
+
+  getLockStatus() {
+    return this.isLocked;
+  }
+
+  lock() {
+    let currentNode = this.parent;
+
+    while (currentNode) {
+      if (currentNode.isLocked) {
+        return false;
+      }
+      currentNode = currentNode.parent;
+    }
+
+    if (this.hasLockedDescendants()) {
+      return false;
+    }
+
+    this.isLocked = true;
+    return true;
+  }
+
+  unlock() {
+    if (!this.isLocked) {
+      return false;
+    }
+
+    let currentNode = this.parent;
+
+    while (currentNode) {
+      if (currentNode.isLocked) {
+        return false;
+      }
+      currentNode = currentNode.parent;
+    }
+
+    this.isLocked = false;
+    return true;
+  }
+
+  hasLockedDescendants() {
+    if (this.isLocked) {
+      return true;
+    }
+    if (this.left && this.left.hasLockedDescendants()) {
+      return true;
+    }
+    if (this.right && this.right.hasLockedDescendants()) {
+      return true;
+    }
+    return false;
+  }
+}
