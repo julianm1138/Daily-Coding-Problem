@@ -1,0 +1,49 @@
+This problem was asked by Facebook.
+
+Implement regular expression matching with the following special characters:
+
+. (period) which matches any single character
+* (asterisk) which matches zero or more of the preceding element
+That is, implement a function that takes in a string and a valid regular expression and returns whether or not the string matches the regular expression.
+
+For example, given the regular expression "ra." and the string "ray", your function should return true. The same regular expression on the string "raymond" should return false.
+
+Given the regular expression ".*at" and the string "chat", your function should return true. The same regular expression on the string "chats" should return false.
+
+
+
+// We can solve this with recursion and using a memo.
+// Create the key which stores the indices of the regex and the string.
+// Define the base case: if we are at the end of the regex and the string then that means the string matches the regex pattern.
+// If there are still string characters left to iterate, return false.
+// Define a variable to validate a match.
+// dp(i + 2, j) checks if we can match the rest of the string starting from at without using the .*.
+// dp(i, j + 1) checks if we can match the rest of the regex from .* while consuming one character from the string.
+
+
+const regExpMatch = (regex, str) => {
+  const memo = {};
+
+  const dp = (i, j) => {
+    const key = `${i},${j}`;
+    if (key in memo) return memo[key];
+
+    // Base case: if we reach the end of both the regex and the string
+    if (i === regex.length && j === str.length) return true;
+    if (i === regex.length) return false;
+
+    const isMatch = j < str.length && (regex[i] === str[j] || regex[i] === ".");
+
+   
+    if (i + 1 < regex.length && regex[i + 1] === "*") {
+      memo[key] = dp(i + 2, j) || (isMatch && dp(i, j + 1));
+    } else {
+      memo[key] = isMatch && dp(i + 1, j + 1);
+    }
+    console.log(memo);
+    return memo[key];
+  };
+
+  return dp(0, 0);
+};
+console.log(regExpMatch(".*at", "chat"));
