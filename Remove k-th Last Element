@@ -1,0 +1,75 @@
+This problem was asked by Google.
+
+Given a singly linked list and an integer k, remove the kth last element from the list. k is guaranteed to be smaller than the length of the list.
+
+The list is very long, so making more than one pass is prohibitively expensive.
+
+Do this in constant space and in one pass.
+
+// We can solve this by using two pointers. One stays at the head, the other moves k nodes forward. Then both pointers move forward until the second pointer reaches the tail of the linked list. The first pointer should be at the k-th last node. 
+
+
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head = null;
+  }
+
+  append(value) {
+    let newNode = new Node(value);
+    if (this.head === null) {
+      this.head = newNode;
+      return;
+    }
+    let current = this.head;
+    while (current.next !== null) {
+      current = current.next;
+    }
+    current.next = newNode;
+  }
+
+  deleteKthLastElement(k) {
+    let pointerOne = this.head;
+    let pointerTwo = this.head;
+
+    for (let i = 0; i < k; i++) {
+      if (pointerTwo !== null) {
+        pointerTwo = pointerTwo.next;
+      }
+    }
+
+    if (pointerTwo === null) {
+      this.head = this.head.next;
+      return;
+    }
+
+    let previous = null;
+
+    while (pointerTwo !== null) {
+      previous = pointerOne;
+      pointerTwo = pointerTwo.next;
+      pointerOne = pointerOne.next;
+    }
+
+    if (previous !== null) {
+      previous.next = pointerOne.next;
+    }
+  }
+}
+
+const list = new LinkedList();
+list.append(0);
+list.append(1);
+list.append(2);
+list.append(3);
+
+const k = 2;
+list.deleteKthLastElement(k);
+
+console.log(list.head);
