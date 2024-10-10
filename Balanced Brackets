@@ -1,0 +1,38 @@
+Given a string of round, curly, and square open and closing brackets, return whether the brackets are balanced (well-formed).
+
+For example, given the string "([])[]({})", you should return true.
+
+Given the string "([)]" or "((()", you should return false.
+
+// We can solve this using a stack.
+// Check for valid opening brace. If valid add to the stack.
+// Else check for valid closing braces. If valid, pop the opening brace. If there is no match between the opening brace and the closing brace return false. 
+// If the stack is empty at the point of checking for a valid closing bracket, it means there was no opening bracket added, therefore a match is not possible.
+
+
+
+const checkForMatch = (str) => {
+  const obj = {
+    "(": ")",
+    "[": "]",
+    "{": "}",
+  };
+
+  let stack = [];
+
+  for (let i = 0; i < str.length; i++) {
+    if (obj[str[i]]) {
+      stack.push(str[i]);
+    } else if (Object.values(obj).includes(str[i])) {
+      if (stack.length === 0) {
+        return false;
+      }
+      const lastOpen = stack.pop();
+
+      if (obj[lastOpen] !== str[i]) return false;
+    }
+  }
+  return stack.length === 0;
+};
+
+console.log(checkForMatch("([])[]({})"));
