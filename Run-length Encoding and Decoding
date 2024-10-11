@@ -1,0 +1,40 @@
+This problem was asked by Amazon.
+
+Run-length encoding is a fast and simple method of encoding strings. The basic idea is to represent repeated successive characters as a single count and character. For example, the string "AAAABBBCCDAA" would be encoded as "4A3B2C1D2A".
+
+Implement run-length encoding and decoding. You can assume the string to be encoded have no digits and consists solely of alphabetic characters. You can assume the string to be decoded is valid.
+
+// We can solve the encoding challenge by getting the count of each character and appending it to the character.
+// To do this we can loop through the string and check if the current character is the same as the last one and if it is, increment the count by 1.
+// If it is not, push the current count to an array and reset the count for the next character count. The loop will repeat the process. Append the final count and its charcater due to the else condition not being met for the final charcater.
+
+// We can solve the decoding challenge by checking if the run-length encoded string is a number. If it is, we want to repeat its consecutive character for that number.
+// Acculmulate the characters in an empty string.
+  
+const runLengthEncode = (str) => {
+  let result = [];
+  let count = 1;
+
+  for (let i = 1; i < str.length; i++) {
+    if (str[i] === str[i - 1]) {
+      count += 1;
+    } else {
+      result.push(`${count}${str[i - 1]}`);
+      count = 1;
+    }
+  }
+  result.push(count + str[str.length - 1]);
+  return result.join("");
+};
+console.log(runLengthEncode("AAAABBBCCDAA"));
+
+const runLengthDecode = (str) => {
+  let result = "";
+  for (let i = 0; i < str.length; i++) {
+    if (!isNaN(str[i])) {
+      result += str[i + 1].repeat(str[i]);
+    }
+  }
+  return result;
+};
+console.log(runLengthDecode("4A3B2C1D2A"));
