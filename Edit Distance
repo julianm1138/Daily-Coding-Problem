@@ -1,0 +1,37 @@
+This problem was asked by Google.
+
+The edit distance between two strings refers to the minimum number of character insertions, deletions, and substitutions required to change one string to the other. For example, the edit distance between “kitten” and “sitting” is three: substitute the “k” for “s”, substitute the “e” for “i”, and append a “g”.
+
+Given two strings, compute the edit distance between them.
+
+// We can solve this with dynamic programmming by checking every substring representation leading up to the comparison of each full string. 
+// We are comparing each substring and if they do not match the possible cost is 1 + n, where n is the substring length, and if they do match the possible cost is 0 + n.
+// When we get to the final substrings (the full strings) our minimum number of actions will be the edit distance between them.
+
+
+const editDistance = (firstStr, secondStr) => {
+  const matrix = Array.from({ length: firstStr.length + 1 }, () =>
+    Array(secondStr.length + 1).fill(0)
+  );
+
+  for (let j = 0; j <= secondStr.length; j++) {
+    matrix[0][j] = j;
+  }
+  for (let i = 0; i <= firstStr.length; i++) {
+    matrix[i][0] = i;
+  }
+
+  for (let i = 1; i <= firstStr.length; i++) {
+    for (let j = 1; j <= secondStr.length; j++) {
+      const cost = firstStr[i - 1] === secondStr[j - 1] ? 0 : 1;
+
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1,
+        matrix[i][j - 1] + 1,
+        matrix[i - 1][j - 1] + cost
+      );
+    }
+  }
+  return matrix[firstStr.length][secondStr.length];
+};
+console.log(editDistance("kitten", "sitting"));
