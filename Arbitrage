@@ -1,0 +1,73 @@
+Suppose you are given a table of currency exchange rates, represented as a 2D array. Determine whether there is a possible arbitrage: that is, whether there is some sequence of trades you can make, starting with some amount A of any currency, so that you can end up with some amount greater than A of that currency.
+
+There are no transaction costs and you can trade fractional quantities.
+
+// We can solve this using the Bellman-Ford algorithm which models our currency table as a graph. 
+// Since we find exchanges between currencies with multiplication we can use negative log to convert multiplicative relationships into additive relationships.
+// By using the negative log we can both simplify calculations and use negative weights in the graph to represent arbitrage. 
+
+
+
+function detectArbitrage(rates) {
+  const n = rates.length;
+
+  //Convert rates to log-space
+  let logRates = [];
+  for (let i = 0; i < n; i++) {
+    logRates[i] = [];
+    for (let j = 0; j < n; j++) {
+      // We negate the logarithm to use Bellman-Ford for negative cycle detection
+      logRates[i][j] = -Math.log(rates[i][j]);
+    }
+  }
+
+  function bellmanFord(start) {
+    // Initialize distances array with Infinity
+    let distances = Array(n).fill(Infinity);
+    distances[start] = 0; // Distance to the start node is 0
+
+    // Relax all edges n-1 times
+    for (let k = 0; k < n - 1; k++) {
+      let updated = false;
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+          if (distances[i] + logRates[i][j] < distances[j]) {
+            distances[j] = distances[i] + logRates[i][j];
+            updated = true;
+          }
+        }
+      }
+      if (!updated) break; // Early exit if no updates
+    }
+
+    // Check for negative-weight cycles (one more relaxation step)
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        if (distances[i] + logRates[i][j] < distances[j]) {
+          // Negative cycle found, arbitrage is possible
+          return true;
+        }
+      }
+    }
+
+    // No negative cycle detected, no arbitrage possible
+    return false;
+  }
+
+  // Check for arbitrage starting from any currency
+  for (let i = 0; i < n; i++) {
+    if (bellmanFord(i)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+const rates = [
+  [1, 0.9, 1.2],
+  [1.1, 1, 0.95],
+  [0.8, 1.05, 1],
+];
+
+console.log(detectArbitrage(rates)); // Output: true or false depending on arbitrage
