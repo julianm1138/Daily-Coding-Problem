@@ -1,0 +1,37 @@
+This problem was asked by Microsoft.
+
+Compute the running median of a sequence of numbers. That is, given a stream of numbers, print out the median of the list so far on each new element.
+
+Recall that the median of an even-numbered list is the average of the two middle numbers.
+
+For example, given the sequence [2, 1, 5, 7, 2, 0, 5], your algorithm should print out:
+
+2
+1.5
+2
+3.5
+2
+2
+2
+
+// This one is a little tricky because they omit information that each running median is actually sorted. 
+// However, the main variable in this problem is the state of the array and I'm assuming that we're not dealing with 10^(6 + n) length sequences.
+// Therefore we can use an empty array to update the state of the sequence, sort, and log the median(s) based on the length of the array.
+
+
+const runningMedian = (sequence) => {
+  let stack = [];
+
+  for (let i = 0; i < sequence.length; i++) {
+    stack.push(sequence[i]);
+    stack = stack.sort((a, b) => a - b);
+    if (stack.length === 1) {
+      console.log(stack[0]);
+    } else if (stack.length % 2 === 0) {
+      console.log((stack[stack.length / 2] + stack[stack.length / 2 - 1]) / 2);
+    } else if (stack.length % 2 !== 0) {
+      console.log(stack[Math.floor(stack.length / 2)]);
+    }
+  }
+};
+console.log(runningMedian([2, 1, 5, 7, 2, 0, 5]));
