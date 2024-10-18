@@ -1,0 +1,35 @@
+This problem was asked by Dropbox.
+
+Given the root to a binary search tree, find the second largest node in the tree.
+
+// considering a BST's structure we need to traverse down the right branch and check for subtrees.
+// If we go down the right branch, its end should be the largest node. 
+// Check for left subtrees and get the largest node in the left subtree (if it exists).
+// Check for right subtrees.
+// At the end of the loop we should have the second largest node, inside of current. So return current.
+// otherwise the second largest node should be inside of parent, so return parent.
+
+
+const findSecondLargestNodeBST = (root) => {
+  if (!root || (root.right && !root.left)) {
+    return null;
+  }
+  let parent = null;
+  let current = root;
+
+  while (current.right !== null) {
+    parent = current;
+    current = current.right;
+  }
+
+  if (current.left !== null) {
+    current = current.left;
+
+    while (current.right !== null) {
+      current = current.right;
+    }
+    return current;
+  }
+  return parent;
+};
+console.log(findSecondLargestNodeBST(bst.root));
