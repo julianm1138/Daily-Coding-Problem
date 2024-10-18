@@ -1,0 +1,38 @@
+This problem was asked by Google.
+
+Given an array of strictly the characters 'R', 'G', and 'B', segregate the values of the array so that all the Rs come first, the Gs come second, and the Bs come last. You can only swap elements of the array.
+
+Do this in linear time and in-place.
+
+For example, given the array ['G', 'B', 'R', 'R', 'B', 'R', 'G'], it should become ['R', 'R', 'R', 'G', 'G', 'B', 'B'].
+
+
+// We can solve this in O(n) time using pointers. 
+// Move the mid pointer forward while it is less than or equal to the high pointer.
+// Move the high pointer back *and* swap the current element with the high pointer any time the mid pointer is "B"
+// In other words, mid pointer keeps track of each element as we iterate by incrementing under two conditions: if mid pointer === "R", if mid pointer === "G"
+// But if the mid ponter === "R" we swap the low pointer and mid pointer element. 
+
+//To summarize, the low pointer stays at the beginning of the array, the mid pointer starts at the beginning of the array and moves forward, and the high pointer moves back to close the distance to end the loop.
+
+
+const sortChars = (arr) => {
+  let low = 0;
+  let mid = 0;
+  let high = arr.length - 1;
+
+  while (mid <= high) {
+    if (arr[mid] === "R") {
+      [arr[low], arr[mid]] = [arr[mid], arr[low]];
+      low++;
+      mid++;
+    } else if (arr[mid] === "G") {
+      mid++;
+    } else {
+      [arr[mid], arr[high]] = [arr[high], arr[mid]];
+      high--;
+    }
+  }
+  return arr;
+};
+console.log(sortChars(["B", "G", "R", "G", "B"]));
