@@ -1,0 +1,33 @@
+This problem was asked by Google.
+
+The power set of a set is the set of all its subsets. Write a function that, given a set, generates its power set.
+
+For example, given the set {1, 2, 3}, it should return {{}, {1}, {2}, {3}, {1, 2}, {1, 3}, {2, 3}, {1, 2, 3}}.
+
+You may also use a list or array to represent a set.
+
+
+// Given the nature of the problem, we are required to check 2^n subsets of the original set so we can only solve this in O(2^n).
+// To generate our result we start with an empty set.
+// Loop through each element (1, 2, 3)
+// Define subset which will be an empty set as we iterate through the result. 
+// Loop through each element again to push each a copy of each subset and element. 
+
+
+const powerSet = (set) => {
+  let result = [[]];
+
+  for (let i = 0; i < set.length; i++) {
+    const element = set[i];
+    const emptySet = [];
+
+    for (let j = 0; j < result.length; j++) {
+      const subset = result[j];
+
+      emptySet.push([...subset, element]);
+    }
+    result = result.concat(emptySet);
+  }
+  return result;
+};
+console.log(powerSet([1, 2, 3]));
