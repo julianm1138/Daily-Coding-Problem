@@ -1,0 +1,37 @@
+"Let's say you are given a string consisting of just the characters '(', ')', '{', '}', '[' and ']', write a function to determine if the input string is valid. An input string is valid if:
+
+Open brackets must be closed by the corresponding closing brackets.
+Open brackets must be closed in the correct order.
+For example, an input of "{[()]}" is valid, while "([)]" is not.
+
+// We can solve this by using a stack. Put all the pairs in an object. If we have an opening bracket, push it onto the stack. If we have a closing bracket check if it matches with its corresponding property.
+// If it matches, pop it from the stack. If it doesn't match we will still have elements left in the stack which signifies invalid input. 
+
+
+const checkValidBraces = (str) => {
+  let stack = [];
+
+  let pairs = {
+    "{": "}",
+    "(": ")",
+    "[": "]",
+  };
+
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] in pairs) {
+      stack.push(str[i]);
+    } else {
+      if (str[i] === pairs[stack[stack.length - 1]]) {
+        stack.pop();
+      }
+    }
+    console.log(stack);
+  }
+
+  if (stack.length === 0) {
+    return true;
+  }
+  return false;
+};
+console.log(checkValidBraces("{[({{{}}})]}"));
+console.log(checkValidBraces("([)]"));
