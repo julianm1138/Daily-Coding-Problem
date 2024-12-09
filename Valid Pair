@@ -1,0 +1,38 @@
+This problem was asked by Google.
+
+Given a string of parentheses, write a function to compute the minimum number of parentheses to be removed to make the string valid (i.e. each open parenthesis is eventually closed).
+
+For example, given the string "()())()", you should return 1. Given the string ")(", you should return 2, since we must remove all of them.
+
+// We can solve this by using a count, stack, and object. 
+// The idea is to check for valid parenthesis using an object, and add any invalid parethesis to the stack.
+// At the end we return the count + the stack.length. 
+
+// Loop through the string and check if the current char is an opening parenthesis, if yes push to the stack.
+// If no, pop the stack and check if that popped char matches a closing parenthesis in the object. If it does, we have a valid pair, so continue (the stack will be empty for as long as there are valid pairs).
+// If they do not match, increment the count. 
+// Our logic handles two invalid cases: when there are invalid pairs such as ")(" which will check for cases where the closing parenthesis is by itself. If the empty stack's object value === char (this will fail so count will increment)
+//The other invalid case is where we have multiple opening parentheses such as  "((()". These get added to the stack and are left there if there are no matches, thus giving us the count of invalid parentheses.
+// We return the sum of these two valid cases for each string.
+
+
+
+function checkValidParenthesis(str) {
+  const validPair = { "(": ")" };
+  let count = 0;
+  let stack = [];
+  for (char of str) {
+    if (validPair.hasOwnProperty(char)) {
+      stack.push(char);
+    } else {
+      const last = stack.pop();
+      if (validPair[last] === char) {
+        continue;
+      } else {
+        count++;
+      }
+    }
+  }
+  return count + stack.length;
+}
+console.log(checkValidParenthesis(")((("));
