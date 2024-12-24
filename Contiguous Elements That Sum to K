@@ -1,0 +1,28 @@
+Given a list of integers and a number K, return which contiguous elements of the list sum to K.
+
+For example, if the list is [1, 2, 3, 4, 5] and K is 9, then it should return [2, 3, 4], since 2 + 3 + 4 = 9.
+
+// We can use the indexes to keep track of the sub array we need to return. 
+// We can solve this by using a sliding window to keep track of the sequence of numbers that sum to K.
+// Build a current sum and then while currentSum is less than or equal to k, we subtract integers from it as we shrink the window.
+// If currentSum === k return the subarray.
+// In all other cases return an empty array. 
+
+function getConsecutiveSum(arr, k) {
+  let start = 0;
+  let currentSum = 0;
+
+  for (let i = 0; i < arr.length; i++) {
+    currentSum += arr[i];                // Build the sum so that it is just barely greater than k/ the first integer greater than k
+
+    while (currentSum > k && start <= i) {
+      currentSum -= arr[start];          // Subtract from the sum and shrink the window until the sum equals k
+      start++;
+    }
+    if (currentSum === k) {
+      return arr.slice(start, i + 1);
+    }
+  }
+  return [];
+}
+console.log(getConsecutiveSum([1, 2, 3, 4, 5], 9));
