@@ -2,7 +2,7 @@ Given an array of integers nums and an integer k, find the contiguous subarray (
 
 // We can solve this with a sliding window, where we add and subtract each integer in a window of k size, and keep track of the currentSum for each window.
 // First make the window of size k. Keep track of the current sum.
-// Then substract the last integer in the array and add the most recent integer in the array to the current sum.
+// Then substract the first integer in the array and add the last integer in the array to the current sum.
 
 
 
