@@ -1,0 +1,21 @@
+Given a function f, and N return a debounced f of N milliseconds.
+
+That is, as long as the debounced f continues to be invoked, f itself will not be called for N milliseconds.
+
+// We need to call function f with a delay of N milliseconds only after that time has elapsed. 
+// We can return an inner function to create a closure so that we have access to timeout. 
+// Now when we call debounce it will set up f and N and when we call the inner function it should execute the function after N milliseconds.
+// Any repeated calls will reset the timeout.
+
+
+
+function debounce(f, N) {
+  let timeout;
+
+  return function () {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      f();
+    }, N);
+  };
+}
