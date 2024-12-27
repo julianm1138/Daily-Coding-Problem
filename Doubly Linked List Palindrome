@@ -1,0 +1,57 @@
+Determine whether a doubly linked list is a palindrome. What if it’s singly linked?
+
+For example, 1 -> 4 -> 3 -> 4 -> 1 returns True while 1 -> 4 returns False.
+
+
+// We need to check the values in the doubly linked list and if any values are not equal, then return false.
+// We can build a doubly linked list with classes. One for the nodes and one for the DLL.
+// Append method will let us add nodes to the DLL.
+// To check if the DLL is a palindrome we set a pointer at the head and tail. Work inwards and if the values are ever not equal, return false. 
+// Update the pointers on every iteration. 
+
+
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.prev = null;
+    this.next = null;
+  }
+}
+
+class DoublyLinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+  }
+
+  append(data) {
+    const newNode = new Node(data);
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      newNode.prev = this.tail;
+      this.tail.next = newNode;
+      this.tail = newNode;
+    }
+  }
+
+  isPalindrome() {
+    if (!this.head || !this.head.next) {        // Account for empty or single node LL's
+      return true;
+    }
+
+    let left = this.head;
+    let right = this.tail;
+
+    while (left !== right && left.prev !== right) {
+      if (left.data !== right.data) {
+        return false;
+      }
+      left = left.next;
+      right = right.prev;
+    }
+
+    return true;
+  }
+}
