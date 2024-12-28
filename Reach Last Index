@@ -1,0 +1,24 @@
+Given an integer list where each number represents the number of hops you can make, determine whether you can reach to the last index starting at index 0.
+
+For example, [2, 0, 1, 0] returns True while [1, 1, 0, 1] returns False.
+
+// We can solve this by using the sum of the indexes to move a pointer forward.
+// If the pointer is the final index then that means we have successfully reached the last index.
+// If the pointer does not reach the end that means it had nothing to add to the pointer the current value would be 0
+
+function reachLastIndex(arr) {
+  let pointer = 0;
+  let current = arr[0];
+
+  while (pointer <= arr.length - 1) {
+    if (current > 0) {
+      pointer += current;
+      current = arr[pointer];
+      if (pointer === arr.length - 1) return true;
+    } else if (current === 0) {
+      return false;
+    }
+  }
+}
+console.log(reachLastIndex([2, 0, 1, 0]));
+console.log(reachLastIndex([1, 1, 0, 1]));
