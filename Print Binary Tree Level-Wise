@@ -1,0 +1,49 @@
+Print the nodes in a binary tree level-wise. For example, the following should print 1, 2, 3, 4, 5.
+
+// We can solve this by using a queue to print the values in order.
+// Add the first node to the queue.
+// Dequeue the node at the front of the queue and print it.
+// If a left node exists add it to the queue.
+// If a right node exists add it to the queue.
+// Repeat and terminate when the queue is empty. 
+
+
+// Nodes will point to two possible references. Either another node or null, or both of either one. 
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+// Build a binary tree by connecting the nodes down the path we need
+const root = new Node(1);
+root.left = new Node(2);
+root.right = new Node(3);
+root.left.left = new Node(4);
+root.left.right = new Node(5);
+root.right.left = new Node(6);
+
+function levelOrderTravseral(root) {
+  if (!root) return;
+
+  let queue = [];
+
+  queue.push(root);
+
+  while (queue.length > 0) {
+    let currentNode = queue.shift();
+
+    console.log(currentNode.value);
+
+    if (currentNode.left) {
+      queue.push(currentNode.left);
+    }
+
+    if (currentNode.right) {
+      queue.push(currentNode.right);
+    }
+  }
+}
+
+levelOrderTravseral(root);
