@@ -1,0 +1,19 @@
+This problem was asked by Google.
+
+Given two strings A and B, return whether or not A can be shifted some number of times to get B.
+
+For example, if A is abcde and B is cdeab, return true. If A is abc and B is acb, return false.
+
+// If we combined the first string we would get every possibility of string rotations (shifting one letter at a time).
+// Therefore if the second string is a substring of the combination. 
+
+
+function checkValidRotation(str1, str2) {
+  if (str1.length !== str2.length) return false;
+
+  const joinedStr = str1 + str1;
+
+  return joinedStr.includes(str2);
+}
+
+console.log(checkValidRotation("abcde", "cdeab"));
