@@ -1,0 +1,24 @@
+Given a word W and a string S, find all starting indices in S which are anagrams of W.
+
+For example, given that W is "ab", and S is "abxaba", return 0, 3, and 4.
+
+
+function indexAnagram(W, S) {
+  const sortedW = W.split("").sort().join("").toLowerCase();
+  console.log(sortedW);
+  const lowercaseS = S.toLowerCase();
+  console.log(lowercaseS);
+  let result = [];
+  for (let i = 0; i < lowercaseS.length; i++) {
+    if (lowercaseS.substr(i, W.length).split("").sort().join("") === sortedW) {
+      console.log(lowercaseS.substr(i, W.length));
+      result.push(i);
+    }
+  }
+  return result;
+}
+
+console.log(indexAnagram("ab", "abxaba"));
+
+
+
