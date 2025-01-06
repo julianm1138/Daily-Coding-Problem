@@ -1,3 +1,44 @@
 Given a string and a set of delimiters, reverse the words in the string while maintaining the relative order of the delimiters. For example, given "hello/world:here", return "here/world:hello"
 
 Follow-up: Does your solution work for the following cases: "hello/world:here/", "hello//world:here"
+
+// We can solve this by separating words and delimiters and using the index of the delimiters to keep track of its spot in the new string.
+
+
+
+function reverseWordsWithDelimiters(s) {
+  let words = [];
+  let delimiters = [];
+  let currentWord = "";
+
+  for (let i = 0; i < s.length; i++) {
+    if (/[^a-zA-Z0-9]/.test(s[i])) {   // If the character is a delimiter add the word to the words array and reassign the word to be empty string again
+      if (currentWord) {
+        words.push(currentWord);
+        currentWord = "";
+      }
+      delimiters.push(s[i]);  // Then push the delimiter to the delimiters array
+    } else {
+      currentWord += s[i];  // Else construct each current word before we hit a delimiter 
+    }
+  }
+  if (currentWord) words.push(currentWord);   // Push the final word 
+
+
+  const reverseWords = words.reverse();
+
+  let result = "";
+
+  let delimiterIndex = 0;
+
+  for (const word of reverseWords) {
+    result += word;
+    if (delimiterIndex < delimiters.length) {  // Prevent out of bounds issues 
+      result += delimiters[delimiterIndex];    // Add delimiter based on its index
+      delimiterIndex++;
+    }
+  }
+  return result;
+}
+
+console.log(reverseWordsWithDelimiters("hello/world:here"));
