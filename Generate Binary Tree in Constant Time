@@ -1,0 +1,29 @@
+Generate a finite, but an arbitrarily large binary tree quickly in O(1).
+
+That is, generate() should return a tree whose size is unbounded but finite.
+
+
+
+// We can solve this by dynamically generating a binary tree but not allocating it to memory through lazy instantiation. 
+
+class TreeNode {
+  constructor(value, left, right) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+
+  left(value) {
+    if (!this.left) {
+      this.left = TreeNode(this.value * 2);
+      return this.left;
+    }
+  }
+
+  right() {
+    if (!this.right) {
+      this.right = TreeNode(this.value * 2 + 1);
+      return this.right;
+    }
+  }
+}
