@@ -1,0 +1,28 @@
+Given a sorted list of integers, square the elements and give the output in sorted order.
+
+For example, given [-9, -2, 0, 2, 3], return [0, 4, 4, 9, 81].
+
+
+// We can solve this by using two pointers to square the max value and add it to the array. 
+// This works because the input array is sorted which means we will get the max possible value at the start when we compare the first and last elements. 
+// This is because the greatest values possible are the first and last elements (if you use their absolute values).
+// Move the pointer on the side that was the greatest value since we already processed the greatest value of that iteration.
+
+
+function sortSquares(arr) {
+  let result = [];
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    if (Math.abs(arr[left]) > Math.abs(arr[right])) {
+      result.push(Math.abs(arr[left]) ** 2);
+      left++;
+    } else {
+      result.push(Math.abs(arr[right]) ** 2);
+      right--;
+    }
+  }
+  console.log(result.reverse());
+}
+console.log(sortSquares([-9, -2, 0, 2, 3]));
