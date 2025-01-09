@@ -1,0 +1,39 @@
+Given a binary tree, return the level of the tree with minimum sum.
+// We can solve this by using BFS to get the sum of the nodes at each level and update the minimum sum as needed.
+// We need two loops:
+// One to handle when there are still tree levels. This loop will set currentSum back to 0 and keep track of the queue's size on each iteration.
+// One to handle adding every node's value to the current sum and adding the current level's children to the queue.
+// So in the outer scope we need a current sum variable and in the inner scope we need to add the nodes' values to the current sum variable.
+// Outer scope keeps track of the global variable and state
+// Inner scope executes operations on the global variables and uses them to define boundaries for inner operations/operations on each individual iteration of state 
+    
+class TreeNode {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+  getMinSumOfBinaryTree() {
+    if (!root) return;
+    let currentSum = 0;
+    let minSum = this.value;
+    let queue = [];
+    queue.push(this);
+    while (queue.length > 0) {
+      currentSum = 0;
+      let levelSize = queue.length;        // Keep track of current queue length
+      for (let i = 0; i < levelSize; i++) {   // Loop only adds nodes up to the queue length (levelSize). 
+        let node = queue.shift();             // Store the nodes temporarily 
+        currentSum += node.value;             // Add the node values to the current sum
+        if (node.left) queue.push(node.left);    // Add the node's children. Since it's a queue and we're using shift(), the order does not get messed up.
+        if (node.right) queue.push(node.right);
+        if (currentSum < minSum) minSum = currentSum;
+      }
+    }
+    console.log(minSum);
+  }
+}
+const root = new TreeNode(1);
+root.left = new TreeNode(-2);
+root.right = new TreeNode(-3);
+root.getMinSumOfBinaryTree();
